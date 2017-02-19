@@ -1,14 +1,34 @@
 (function() {
+  /**
+   * @function SongPlayer
+   * @desc Contains the logic for playing the songs from the Buzz service
+   * @returns the Object SongPlayer
+   */
   function SongPlayer() {
     var SongPlayer = {};
+  /**
+   * @desc currentSong object audio file
+   * @type {Object}
+   */
     var currentSong = null;
-    /**
+
+  /**
    * @desc Buzz object audio file
    * @type {Object}
    */
     var currentBuzzObject = null;
 
-    /**
+  /**
+   * @function playSong
+   * @desc plays the current song as currentBuzzObject, sets playing variable to true
+   */
+    var playSong = function(song){
+      currentBuzzObject.play();
+      song.playing = true;
+    }
+
+
+  /**
    * @function setSong
    * @desc Stops currently playing song and loads new audio file as currentBuzzObject
    * @param {Object} song
@@ -30,11 +50,10 @@
     SongPlayer.play = function(song) {
       if (currentSong !== song) { //Are we clicking on the current song?
         setSong(song);
-        currentBuzzObject.play();
-        song.playing = true; //This is working with ng-show directive to determine if the song is playing
+        playSong(song);
       } else if (currentSong === song) { //Are we clicking on the current song?
         if (currentBuzzObject.isPaused()) { //If it is already paused, then you are trying to play it.
-          currentBuzzObject.play();
+          playSong(song);
         }
       }
     };
