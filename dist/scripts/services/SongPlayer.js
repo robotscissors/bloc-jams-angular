@@ -4,7 +4,7 @@
    * @desc Contains the logic for playing the songs from the Buzz service
    * @returns the Object SongPlayer
    */
-  function SongPlayer(Fixtures) {
+  function SongPlayer(Fixtures){
     var SongPlayer = {};
 
     /**
@@ -22,12 +22,22 @@
   /**
    * @function playSong
    * @desc plays the current song as currentBuzzObject, sets playing variable to true
+   * @param {object} song
    */
     var playSong = function(song){
       currentBuzzObject.play();
       song.playing = true;
     }
 
+    /**
+    * @function stopSong
+    * @desc previous method decrements the song index
+    * @param {song} the current song
+    */
+    var stopSong = function(song){
+      currentBuzzObject.stop();
+      song.playing = null;
+    }
 
   /**
    * @function setSong
@@ -74,12 +84,17 @@
         }
       }
     };
-
+    /**
+   * @desc pause method pauses the song
+   * @type {object}
+   * @param {song} the current song
+   */
     SongPlayer.pause = function(song) {
       song = song || SongPlayer.currentSong;
       currentBuzzObject.pause();
       song.playing = false;
     };
+
 
     /**
    * @desc previous method decrements the song index
@@ -99,10 +114,31 @@
       }
     };
 
+    /**
+   * @desc next method increases the song index
+   * @type {method}
+   */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++; //advance song index
+
+      if (currentSongIndex >= currentAlbum.songs.length) { // are we already on the last song?
+        currentSongIndex = 0; //loop back to the first song
+        var song = currentAlbum.songs[currentSongIndex]; //get new song info
+        setSong(song);
+        playSong(song);
+      } else {
+        var song = currentAlbum.songs[currentSongIndex]; //get new stong.
+        setSong(song);
+        playSong(song);
+      }
+
+    };
+
     return SongPlayer;
   }
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', SongPlayer);
 })();
