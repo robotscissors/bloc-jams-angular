@@ -36,8 +36,8 @@
    */
     var setSong = function(song) {
       if (currentBuzzObject) { //It is not the current song, stop the song.
-        currentBuzzObject.stop();
-        SongPlayer.currentSong.playing = null; //This is working with ng-show directive to determine if the song is playing
+        stopSong(SongPlayer.currentSong);
+
       }
 
       currentBuzzObject = new buzz.sound(song.audioUrl, {//create a new object for the new song
@@ -75,6 +75,11 @@
       }
     };
 
+    var stopSong = function(song) {
+      currentBuzzObject.stop();
+      song.playing = null;
+    };
+
     SongPlayer.pause = function(song) {
       song = song || SongPlayer.currentSong;
       currentBuzzObject.pause();
@@ -90,19 +95,40 @@
       currentSongIndex--;
 
       if (currentSongIndex < 0) {
-        currentBuzzObject.stop();
-        SongPlayer.currentSong.playing = null;
+//        currentBuzzObject.stop();
+//        SongPlayer.currentSong.playing = null;
+        stopSong(song);
       } else {
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
       }
     };
+      /**
+   * @desc next method increases the song index
+   * @type {method}
+   */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++; //advance song index
+
+      if (currentSongIndex >= currentAlbum.songs.length) { // are we already on the last song?
+        currentSongIndex = 0; //loop back to the first song
+        var song = currentAlbum.songs[currentSongIndex]; //get new song info
+        setSong(song);
+        playSong(song);
+      } else {
+        var song = currentAlbum.songs[currentSongIndex]; //get new stong.
+        setSong(song);
+        playSong(song);
+      }
+    };
+
 
     return SongPlayer;
   }
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', SongPlayer);
 })();
