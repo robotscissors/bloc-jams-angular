@@ -84,20 +84,20 @@
         }
       }
     };
-<<<<<<< HEAD
+
     /**
    * @desc pause method pauses the song
    * @type {object}
    * @param {song} the current song
    */
-=======
+
 
     var stopSong = function(song) {
       currentBuzzObject.stop();
       song.playing = null;
     };
 
->>>>>>> assignment8-services3
+
     SongPlayer.pause = function(song) {
       song = song || SongPlayer.currentSong;
       currentBuzzObject.pause();
