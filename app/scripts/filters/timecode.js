@@ -1,13 +1,16 @@
 (function() {
-  function timecode() {
+  function timecode($rootScope) {
     return function(seconds) {
       var seconds = Number.parseFloat(seconds);
 
       if (Number.isNaN(seconds)) {
         return '-:--';
-      }
+      } else {
 
-      var wholeSeconds = Math.floor(seconds);
+        output = buzz.toTimer(seconds);
+
+
+/*      var wholeSeconds = Math.floor(seconds);
       var minutes = Math.floor(wholeSeconds / 60);
       var remainingSeconds = wholeSeconds % 60;
 
@@ -17,12 +20,15 @@
         output += '0';
       }
 
-      output += remainingSeconds;
-      return output;
+      output += remainingSeconds;*/
+
+        return output;
+      }
+
     };
   }
 
   angular
     .module('blocJams')
-    .filter('timecode', timecode);
+    .filter('timecode', ['$rootScope', timecode]);
 })();
