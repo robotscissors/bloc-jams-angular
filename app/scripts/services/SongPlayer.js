@@ -4,14 +4,15 @@
    * @desc Contains the logic for playing the songs from the Buzz service
    * @returns the Object SongPlayer
    */
-  function SongPlayer($rootScope, Fixtures) {
+  function SongPlayer($rootScope, Fixtures, $document) {
     var SongPlayer = {};
 
     /**
      * @desc Using the Fixtures service get Album information
      * @type {Object}
      */
-   var currentAlbum = Fixtures.getAlbum();
+    var currentAlbum = Fixtures.getAlbum();
+    SongPlayer.soundStyle = "icon ion-volume-high";
 
   /**
    * @desc Buzz object audio file
@@ -37,6 +38,16 @@
       if (currentBuzzObject.isEnded()){
         //call the nextSong function
         SongPlayer.next();
+      }
+    };
+
+    SongPlayer.mute = function(){
+      if (currentBuzzObject.isMuted()){
+        currentBuzzObject.unmute();
+        SongPlayer.soundStyle = "icon ion-volume-high";
+      } else {
+        currentBuzzObject.mute();
+        SongPlayer.soundStyle = "icon ion-volume-mute";
       }
     };
 
@@ -198,12 +209,10 @@
     };
 
 
-
-
     return SongPlayer;
   }
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['$rootScope', 'Fixtures', '$document', SongPlayer]);
 })();
