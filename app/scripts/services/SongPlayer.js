@@ -30,6 +30,18 @@
     }
 
     /**
+    * @function checkSong
+    * @desc checks to see if the current song has ended then it calls the next song
+    */
+    var checkSong = function(){
+      if (currentBuzzObject.isEnded()){
+        //call the nextSong function
+        SongPlayer.next();
+      }
+    };
+
+
+    /**
     * @function stopSong
     * @desc previous method decrements the song index
     * @param {song} the current song
@@ -60,6 +72,7 @@
       currentBuzzObject.bind('timeupdate', function() {
         $rootScope.$apply(function() {
           SongPlayer.currentTime = currentBuzzObject.getTime();
+          checkSong(song);
         });
       });
 
@@ -158,26 +171,6 @@
     };
 
 
-    /**
-   * @desc next method increases the song index
-   * @type {method}
-   */
-    SongPlayer.next = function() {
-      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-      currentSongIndex++; //advance song index
-
-      if (currentSongIndex >= currentAlbum.songs.length) { // are we already on the last song?
-        currentSongIndex = 0; //loop back to the first song
-        var song = currentAlbum.songs[currentSongIndex]; //get new song info
-        setSong(song);
-        playSong(song);
-      } else {
-        var song = currentAlbum.songs[currentSongIndex]; //get new stong.
-        setSong(song);
-        playSong(song);
-      }
-
-    };
 
       /**
    * @function setCurrentTime
@@ -190,6 +183,9 @@
       }
     };
 
+
+
+
     /**
    * @function setVolue
    * @desc Set the volume of the sound object currently playing
@@ -200,6 +196,8 @@
         currentBuzzObject.setVolume(volume);
       }
     };
+
+
 
 
     return SongPlayer;
