@@ -13,6 +13,8 @@
      */
     var currentAlbum = Fixtures.getAlbum();
     SongPlayer.soundStyle = "icon ion-volume-high";
+    SongPlayer.volume = 50; //set default value on volume as 50
+    SongPlayer.currentSong = currentAlbum.songs[0]; //identify the first song as the default
 
   /**
    * @desc Buzz object audio file
@@ -72,12 +74,12 @@
     var setSong = function(song) {
       if (currentBuzzObject) { //It is not the current song, stop the song.
         stopSong(SongPlayer.currentSong);
-
       }
 
       currentBuzzObject = new buzz.sound(song.audioUrl, {//create a new object for the new song
         formats: ['mp3'],
-        preload: true
+        preload: true,
+        volume:50
       });
 
       currentBuzzObject.bind('timeupdate', function() {
@@ -103,13 +105,14 @@
    * @desc currentSong object audio file
    * @type {Object}
    */
-    SongPlayer.currentSong = null;
+    //SongPlayer.currentSong = null;
 
     /**
      * @desc Current playback time (in seconds) of currently playing song
      * @type {Number}
      */
     SongPlayer.currentTime = null;
+
 
     SongPlayer.play = function(song) {
       song = song || SongPlayer.currentSong;
@@ -195,8 +198,6 @@
     };
 
 
-
-
     /**
    * @function setVolue
    * @desc Set the volume of the sound object currently playing
@@ -205,9 +206,12 @@
     SongPlayer.setVolume = function(volume){
       if (currentBuzzObject) {
         currentBuzzObject.setVolume(volume);
+        SongPlayer.volume =  volume;
       }
     };
 
+    // this following is meant to set a song for the player bar if none is selected on load
+    setSong(SongPlayer.currentSong);
 
     return SongPlayer;
   }
