@@ -17,6 +17,7 @@ Install the project dependencies by running:
 ```
 $ npm install
 ```
+![screen shot 2018-06-21 at 9 55 39 pm](https://user-images.githubusercontent.com/24664863/41758510-dd063c2e-759d-11e8-938a-87a776384513.png)
 
 ## Run the Application
 
